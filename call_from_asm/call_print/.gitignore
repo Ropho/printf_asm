@@ -1,0 +1,5 @@
+-pie
+call_print_from_asm.o
+call_from_asm.c
+call_from_asm.o
+print
