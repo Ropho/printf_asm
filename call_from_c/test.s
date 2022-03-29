@@ -74,15 +74,17 @@ procent_dealer:
 	xor rbx, rbx
 
 	mov bl, byte [r14]
-	sub bl, 'a' + 1             ; code -> offset from 'a'
-                                    ; jmp to default
+	sub bl, 'a'             ; code -> offset from 'a'
+	
+	cmp bl, 23d				;vihod za granicu
+	ja stdd
+	                             ; jmp to default
 	shl rbx, 3                  ; rbx *= 8
 
 	mov rax, JumpTable
 	add rbx, rax
-	mov rbx, [rbx]	;SEGFAULT HERE
 
-	jmp rbx                  	; jump to particlar JumpTable	
+	jmp [rbx]                  	; jump to particlar JumpTable	
 
 strr:
     call param
@@ -98,21 +100,14 @@ strr:
 	pop r14
 
 	push r14
-	.loop:
 
-		push rcx
-		push rbx
+	mov r14, rbx
+	mov rax, 0x01      ; write64 (rdi, rsi, rdx) ... r10, r8, r9
+	mov rdi, 1         ; stdout
+	mov rsi, r14
+	mov rdx, rcx    	; strlen (Msg)
+	syscall
 
-		mov r14, rbx
-		putchar
-
-		pop rbx
-		inc rbx
-		pop rcx
-
-		sub rcx, 1d
-		cmp rcx, 0d
-	jne .loop
 	pop r14
 
 	jmp endd
@@ -186,29 +181,30 @@ section .data
     buffer_param times 5 dq (0)
 
 	JumpTable:
-		dq bin	        ;0
-		dq character	;1
-		dq decc	        ;2
-		dq stdd	        ;3
-		dq stdd	        ;4
-		dq stdd	        ;5
-		dq stdd	        ;6
-		dq stdd	        ;7
-		dq stdd	        ;8
-		dq stdd	        ;9
-		dq stdd	        ;10
-		dq stdd	        ;11
-		dq stdd	        ;12
-		dq oct	        ;13
-		dq stdd	        ;14
-		dq stdd	        ;15
-		dq stdd	        ;16
-		dq strr	        ;17
-		dq stdd	        ;18
-		dq stdd	        ;19
-		dq stdd	        ;20
-		dq stdd	        ;21
-		dq hex	        ;22
+		dq stdd			;'a'
+		dq bin	        ;'b'
+		dq character	;'c'
+		dq decc	        ;'d'
+		dq stdd	        ;'e'
+		dq stdd	        ;'f'
+		dq stdd	        ;'g'
+		dq stdd	        ;'h'
+		dq stdd	        ;'i'
+		dq stdd	        ;'j'
+		dq stdd	        ;'k'
+		dq stdd	        ;'l'
+		dq stdd	        ;'m'
+		dq stdd	        ;'n'
+		dq oct	        ;'o'
+		dq stdd	        ;'p'
+		dq stdd	        ;'q'
+		dq stdd	        ;'r'
+		dq strr	        ;'s'
+		dq stdd	        ;'t'
+		dq stdd	        ;'u'
+		dq stdd	        ;'v'
+		dq stdd	        ;'w'
+		dq hex	        ;'x'
 
 ;=============================
 

@@ -4,8 +4,7 @@
 extern int rprintf (const char*, ...);
 
 int main(int argc, char **argv) {
-
-    rprintf ("%x %c %c %c %c %s %c %d    !", 123, '2', '3', '4', '5', "22", '7', 4444);
-
+    // rprintf ("%%");
+    rprintf("%s I love %x na %b%%%c \nI %s %x %d%%%c%b\n", "QWEEQWEQWEQW", 3802, 8, '!', "love", 3802, 100, 33, 255);
     return 0;
 }
